@@ -7,11 +7,12 @@ import { addContact } from '../../actions/findContact';
 const AddContact = ({ addContact, findContact: { connect, contacts } }) => {
   const [formData, setFormData] = useState({
     agency: '',
+    branch: '',
     positionName: '',
     phone: ''
   });
 
-  const { agency, positionName, phone } = formData;
+  const { agency, branch, positionName, phone } = formData;
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -37,6 +38,19 @@ const AddContact = ({ addContact, findContact: { connect, contacts } }) => {
             value={agency}
             onChange={e => onChange(e)}
           />
+          <small className='form-text'>The Name Of Main Agency</small>
+        </div>
+        <div className='form-group'>
+          <input
+            type='text'
+            placeholder='Branch Name'
+            name='branch'
+            value={branch}
+            onChange={e => onChange(e)}
+          />
+          <small className='form-text'>The Branch Under {agency}</small>
+        </div>
+        <div className='form-group'>
           <input
             type='text'
             placeholder='Position'
@@ -44,6 +58,9 @@ const AddContact = ({ addContact, findContact: { connect, contacts } }) => {
             value={positionName}
             onChange={e => onChange(e)}
           />
+          <small className='form-text'>Position Of That Person</small>
+        </div>
+        <div className='form-group'>
           <input
             type='text'
             placeholder='Mobile Number'
@@ -51,9 +68,7 @@ const AddContact = ({ addContact, findContact: { connect, contacts } }) => {
             value={phone}
             onChange={e => onChange(e)}
           />
-          <small className='form-text'>
-            Could be your own company or one you work for
-          </small>
+          <small className='form-text'>Official Mobile Number</small>
         </div>
 
         <input type='submit' className='btn btn-primary my-1' />

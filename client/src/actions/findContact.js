@@ -1,14 +1,14 @@
 import axios from 'axios';
 import { setAlert } from './alert';
 
-import { GET_CONTACT, GET_CONTACTS } from './types';
+import { GET_CONTACT, GET_CONTACTS, GET_AGENCIES } from './types';
 
-export const getContact = agency => async dispatch => {
+export const getAgencies = () => async dispatch => {
   try {
-    const res = await axios.get(`/api/contact/${agency}`);
+    const res = await axios.get('/api/agencies');
 
     dispatch({
-      type: GET_CONTACTS,
+      type: GET_AGENCIES,
       payload: res.data
     });
   } catch (err) {
@@ -20,9 +20,9 @@ export const getContact = agency => async dispatch => {
   }
 };
 
-export const getAllContact = () => async dispatch => {
+export const getContact = subAgency => async dispatch => {
   try {
-    const res = await axios.get('/api/contacts');
+    const res = await axios.get(`/api/contact/${subAgency}`);
 
     dispatch({
       type: GET_CONTACTS,

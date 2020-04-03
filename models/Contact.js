@@ -1,11 +1,15 @@
 const mongoose = require('mongoose');
 
 const ContactSchema = new mongoose.Schema({
-  agency: {
+  branch: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'agency'
+    ref: 'branch'
   },
-  name: {
+  agencyName: {
+    type: String,
+    required: true
+  },
+  branchName: {
     type: String,
     required: true
   },

@@ -4,3 +4,5 @@ export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_FAIL = 'REGISTER_FAIL';
 export const GET_CONTACT = 'GET_CONTACT';
 export const GET_CONTACTS = 'GET_CONTACTS';
+export const GET_BRANCHES = 'GET_BRANCHES';
+export const GET_AGENCIES = 'GET_AGENCIES';
