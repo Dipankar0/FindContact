@@ -17,7 +17,14 @@ const ContactSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  name: {
+    type: String
+  },
   phone: {
+    type: String,
+    required: true
+  },
+  email: {
     type: String
   }
 });

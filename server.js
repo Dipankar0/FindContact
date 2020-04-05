@@ -9,7 +9,7 @@ connectDB();
 app.use(express.json({ extended: false }));
 
 app.use('/api', require('./routes/api/contact'));
-//app.use('/api/auth', require('./routes/api/auth'));
+app.use('/api', require('./routes/api/mraContact'));
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));

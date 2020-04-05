@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { getContact, getAgencies } from '../../actions/findContact';
 import { getBranches } from '../../actions/findBranch';
@@ -12,8 +13,8 @@ const FindContact = ({
   findContact: { contacts },
   findBranch: { branches }
 }) => {
-  const [agency, setAgency] = useState('');
-  const [subAgency, setSubAgency] = useState('');
+  const [agencyId, setAgency] = useState('');
+  const [subAgencyId, setSubAgency] = useState('');
 
   const onChangeAgency = e => {
     setAgency(e.target.value);
@@ -28,8 +29,8 @@ const FindContact = ({
 
   const onSubmit = async e => {
     e.preventDefault();
-    console.log(subAgency);
-    getContact(subAgency);
+    console.log(subAgencyId);
+    getContact(subAgencyId);
   };
 
   useEffect(() => {
@@ -38,7 +39,7 @@ const FindContact = ({
 
   return (
     <Fragment>
-      <h1 className='large text-primary'>Find Contact</h1>
+      <h1 className='large text-primary'>Find Contacts of MFI</h1>
       <p className='lead'>
         <i className='fas fa-user'></i> Select Agency
       </p>
@@ -48,6 +49,7 @@ const FindContact = ({
             {agencies !== null && agencies.length > 0 ? (
               <Fragment>
                 <select
+                  name='agencyId'
                   onChange={e => {
                     onChangeAgency(e);
                   }}
@@ -56,7 +58,7 @@ const FindContact = ({
                   {agencies.map(agency => (
                     <option
                       key={agency && agency._id}
-                      value={agency && agency.agencyName}
+                      value={agency && agency._id}
                     >
                       {agency && agency.agencyName}
                     </option>
@@ -80,6 +82,7 @@ const FindContact = ({
             {branches !== null && branches.length > 0 ? (
               <Fragment>
                 <select
+                  name='subAgencyId'
                   onChange={e => {
                     onChangeSubAgency(e);
                   }}
@@ -88,13 +91,13 @@ const FindContact = ({
                   {branches.map(branch => (
                     <option
                       key={branch && branch._id}
-                      value={branch && branch.branchName}
+                      value={branch && branch._id}
                     >
                       {branch && branch.branchName}
                     </option>
                   ))}
                 </select>
-                <small className='form-text'>All Branches under {agency}</small>
+                <small className='form-text'>All Branches</small>
               </Fragment>
             ) : (
               <div>
@@ -113,21 +116,64 @@ const FindContact = ({
       <br />
       <div>
         <h1>Contact details:</h1>
-        <h1 style={{ color: '#1A5276' }} className='large'>
-          {agency}
-        </h1>
+        <Fragment>
+          {agencies !== null && agencies.length > 0 && (
+            <Fragment>
+              {agencies.map(agency => (
+                <Fragment key={agency && agency._id}>
+                  {agency && agency._id === agencyId && (
+                    <div key={agency && agency._id}>
+                      <h1 style={{ color: '#1A5276' }} className='large'>
+                        {agency && agency.agencyName}
+                      </h1>
+                    </div>
+                  )}
+                </Fragment>
+              ))}
+            </Fragment>
+          )}
+        </Fragment>
+        <Fragment>
+          {branches !== null && branches.length > 0 && (
+            <Fragment>
+              {branches.map(branch => (
+                <Fragment key={branch && branch._id}>
+                  {branch && branch._id === subAgencyId && (
+                    <div key={branch && branch._id}>
+                      <h2 style={{ color: '#1A5276' }} className='lead'>
+                        {branch && branch.branchName}
+                      </h2>
+                    </div>
+                  )}
+                </Fragment>
+              ))}
+            </Fragment>
+          )}
+        </Fragment>
         <Fragment>
           {contacts !== null && contacts.length > 0 && (
             <Fragment>
               {contacts.map(contact => (
                 <div key={contact && contact._id}>
+                  <h3 className='lead' style={{ color: '#117A65' }}>
+                    {contact && contact.positionName}
+                  </h3>
                   <p className='lead'>
-                    <span style={{ color: '#117A65' }}>
-                      {contact && contact.positionName} -
-                    </span>
+                    <span>Name - </span>
                     <span style={{ color: '#34495E' }}>
-                      {' '}
+                      {contact && contact.name}
+                    </span>
+                  </p>
+                  <p className='lead'>
+                    <span>Mobile No - </span>
+                    <span style={{ color: '#34495E' }}>
                       {contact && contact.phone}
+                    </span>
+                  </p>
+                  <p className='lead'>
+                    <span>Email - </span>
+                    <span style={{ color: '#34495E' }}>
+                      {contact && contact.email}
                     </span>
                   </p>
                 </div>

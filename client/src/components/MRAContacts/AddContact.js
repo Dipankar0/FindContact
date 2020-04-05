@@ -1,18 +1,18 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import { Link, withRouter, Redirect } from 'react-router-dom';
+import React, { Fragment, useState } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addContact } from '../../actions/findContact';
+import { addContact } from '../../actions/findMRAContact';
 
-const AddContact = ({ addContact, findContact: { connect, contacts } }) => {
+const AddContact = ({ addContact }) => {
   const [formData, setFormData] = useState({
-    agency: '',
-    branch: '',
     positionName: '',
-    phone: ''
+    phone: '',
+    name: '',
+    email: ''
   });
 
-  const { agency, branch, positionName, phone } = formData;
+  const { positionName, phone, name, email } = formData;
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,35 +25,16 @@ const AddContact = ({ addContact, findContact: { connect, contacts } }) => {
 
   return (
     <Fragment>
-      <h1 className='large text-primary'>Add New Contact</h1>
+      <h1 className='large text-primary'>Add New Contact For MRA</h1>
       <p className='lead'>
         <i className='fas fa-user' /> Contact Details for each person
       </p>
+      <small>* = required field</small>
       <form className='form' onSubmit={e => onSubmit(e)}>
         <div className='form-group'>
           <input
             type='text'
-            placeholder='Agency Name'
-            name='agency'
-            value={agency}
-            onChange={e => onChange(e)}
-          />
-          <small className='form-text'>The Name Of Main Agency</small>
-        </div>
-        <div className='form-group'>
-          <input
-            type='text'
-            placeholder='Branch Name'
-            name='branch'
-            value={branch}
-            onChange={e => onChange(e)}
-          />
-          <small className='form-text'>The Branch Under {agency}</small>
-        </div>
-        <div className='form-group'>
-          <input
-            type='text'
-            placeholder='Position'
+            placeholder='* Position'
             name='positionName'
             value={positionName}
             onChange={e => onChange(e)}
@@ -63,16 +44,35 @@ const AddContact = ({ addContact, findContact: { connect, contacts } }) => {
         <div className='form-group'>
           <input
             type='text'
-            placeholder='Mobile Number'
+            placeholder='Name'
+            name='name'
+            value={name}
+            onChange={e => onChange(e)}
+          />
+          <small className='form-text'>Name Of That Person</small>
+        </div>
+        <div className='form-group'>
+          <input
+            type='text'
+            placeholder='* Mobile Number'
             name='phone'
             value={phone}
             onChange={e => onChange(e)}
           />
           <small className='form-text'>Official Mobile Number</small>
         </div>
-
+        <div className='form-group'>
+          <input
+            type='text'
+            placeholder='Email'
+            name='email'
+            value={email}
+            onChange={e => onChange(e)}
+          />
+          <small className='form-text'>Official Email Address</small>
+        </div>
         <input type='submit' className='btn btn-primary my-1' />
-        <Link className='btn btn-light my-1' to='/'>
+        <Link className='btn btn-light my-1' to='/MRAContacts'>
           Find Contact
         </Link>
       </form>
@@ -82,11 +82,11 @@ const AddContact = ({ addContact, findContact: { connect, contacts } }) => {
 
 AddContact.propTypes = {
   addContact: PropTypes.func.isRequired,
-  findContact: PropTypes.object.isRequired
+  findMRAContact: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  findContact: state.findContact
+  findMRAContact: state.findContact
 });
 
 export default connect(mapStateToProps, { addContact })(AddContact);
