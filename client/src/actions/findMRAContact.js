@@ -1,14 +1,18 @@
 import axios from 'axios';
 import { setAlert } from './alert';
 
-import { GET_MRA_CONTACT, GET_MRA_CONTACTS } from './types';
+import {
+  GET_MRA_CONTACT,
+  GET_MRA_CONTACTS,
+  GET_MRA_DESIGNATIONS
+} from './types';
 
-export const getOneContact = contactId => async dispatch => {
+export const getContacts = designationId => async dispatch => {
   try {
-    const res = await axios.get(`/api/getOneMRAContact/${contactId}`);
+    const res = await axios.get(`/api//getMRAContacts//${designationId}`);
 
     dispatch({
-      type: GET_MRA_CONTACT,
+      type: GET_MRA_CONTACTS,
       payload: res.data
     });
   } catch (err) {
@@ -20,12 +24,12 @@ export const getOneContact = contactId => async dispatch => {
   }
 };
 
-export const getContact = () => async dispatch => {
+export const getDesignations = () => async dispatch => {
   try {
-    const res = await axios.get('/api/getMRAContacts');
+    const res = await axios.get('/api/getMRAPositions');
 
     dispatch({
-      type: GET_MRA_CONTACTS,
+      type: GET_MRA_DESIGNATIONS,
       payload: res.data
     });
   } catch (err) {

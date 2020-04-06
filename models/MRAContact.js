@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const MRAContactSchema = new mongoose.Schema({
+  positionId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'mraPosition'
+  },
   positionName: {
     type: String,
     required: true

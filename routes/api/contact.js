@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
 
+const auth = require('../../middleware/auth');
 const Agency = require('../../models/Agency');
 const Branch = require('../../models/Branch');
 const Contact = require('../../models/Contact');
 
-router.get('/agencies', async (req, res) => {
+router.get('/agencies', auth, async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -25,7 +26,7 @@ router.get('/agencies', async (req, res) => {
   }
 });
 
-router.get('/contact/:subAgency', async (req, res) => {
+router.get('/contact/:subAgency', auth, async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -51,7 +52,7 @@ router.get('/contact/:subAgency', async (req, res) => {
   }
 });
 
-router.get('/branches/:agency', async (req, res) => {
+router.get('/branches/:agency', auth, async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -81,8 +82,9 @@ router.get('/branches/:agency', async (req, res) => {
 router.post(
   '/addContact',
   [
+    auth,
     [
-      check('agency', 'Agency Name is required')
+      (check('agency', 'Agency Name is required')
         .not()
         .isEmpty(),
       check('branch', 'Branch Name is required')
@@ -96,7 +98,7 @@ router.post(
         .isEmpty(),
       check('phone', 'Mobile number must be atleast 10 characters').isLength({
         min: 10
-      })
+      }))
     ]
   ],
   async (req, res) => {
