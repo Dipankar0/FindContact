@@ -21,6 +21,7 @@ import Users from './components/admin/user/Users';
 import User from './components/admin/user/User';
 import Admin from './components/admin/Admin';
 import Main from './components/layout/Main';
+import Landing from './components/layout/Landing';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -36,10 +37,11 @@ const App = () => {
       <Router>
         <Fragment>
           <Navbar />
+          <Route exact path='/' component={Landing} />
           <section className='container'>
             <Alert />
             <Switch>
-              <Route exact path='/' component={Main} />
+              <Route exact path='/main' component={Main} />
               <Route exact path='/admin' component={Admin} />
               <Route exact path='/customers' component={Customers} />
               <Route exact path='/customer/:id' component={Customer} />
