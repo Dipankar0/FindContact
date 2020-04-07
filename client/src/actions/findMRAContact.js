@@ -9,7 +9,7 @@ import {
 
 export const getContacts = designationId => async dispatch => {
   try {
-    const res = await axios.get(`/api//getMRAContacts//${designationId}`);
+    const res = await axios.get(`/api/getMRAContacts/${designationId}`);
 
     dispatch({
       type: GET_MRA_CONTACTS,
