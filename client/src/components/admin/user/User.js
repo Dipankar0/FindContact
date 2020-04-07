@@ -1,13 +1,13 @@
 import React, { Fragment, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Spinner from '../../layout/Spinner';
 import UserAbout from './UserAbout';
 import { getUserById } from '../../../actions/admin';
 
 const User = ({
-  auth: { user },
+  auth: { user, isAuthenticated },
   getUserById,
   admin: { adminUser, loading },
   match
@@ -18,22 +18,25 @@ const User = ({
 
   return (
     <Fragment>
-      {user && user.email === 'bhadrad4@gmail.com' && (
-        <Fragment>
-          {adminUser === null || loading ? (
-            <Spinner />
-          ) : (
-            <Fragment>
-              <div className='profile-grid my-1'>
-                <UserAbout adminUser={adminUser} />
-              </div>{' '}
-            </Fragment>
-          )}
-          <Link to='/users' className='btn btn-light'>
-            Back To Users
-          </Link>
-        </Fragment>
-      )}
+      {isAuthenticated === false && <Redirect to='/' />}
+      <Fragment>
+        {user && user.email === 'bhadrad4@gmail.com' && (
+          <Fragment>
+            {adminUser === null || loading ? (
+              <Spinner />
+            ) : (
+              <Fragment>
+                <div className='profile-grid my-1'>
+                  <UserAbout adminUser={adminUser} />
+                </div>{' '}
+              </Fragment>
+            )}
+            <Link to='/users' className='btn btn-light'>
+              Back To Users
+            </Link>
+          </Fragment>
+        )}
+      </Fragment>
     </Fragment>
   );
 };

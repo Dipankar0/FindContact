@@ -20,7 +20,7 @@ router.get('/customers', auth, async (req, res) => {
 
 router.get('/users', auth, async (req, res) => {
   try {
-    let users = await User.find({ permission: 'approved' });
+    let users = await User.find({ permission: 'approve' });
     res.json(users);
   } catch (err) {
     console.error(err.message);
@@ -78,7 +78,7 @@ router.get('/approveCustomer/:customerId', auth, async (req, res) => {
   try {
     let customer = await User.findOneAndUpdate(
       { _id: req.params.customerId },
-      { $set: { permission: 'approved' } },
+      { $set: { permission: 'approve' } },
       { new: true }
     );
 
@@ -107,7 +107,7 @@ router.get('/rejectCustomer/:customerId', auth, async (req, res) => {
   try {
     let customer = await User.findOneAndUpdate(
       { _id: req.params.customerId },
-      { $set: { permission: 'rejected' } },
+      { $set: { permission: 'reject' } },
       { new: true }
     );
 

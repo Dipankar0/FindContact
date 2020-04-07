@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { getContacts, getDesignations } from '../../actions/findMRAContact';
 import { connect } from 'react-redux';
@@ -10,7 +10,7 @@ const FindContact = ({
   getDesignations,
   getContacts,
   findMRAContact: { contact, contacts, designations },
-  auth: { user }
+  auth: { user, isAuthenticated }
 }) => {
   const [designationId, setDesignationId] = useState('');
 
@@ -35,103 +35,131 @@ const FindContact = ({
 
   return (
     <Fragment>
-      {user && user.email && (
-        <Fragment>
-          <h1 className='large text-primary'>MRA Contacts</h1>
-          <p className='lead'>
-            <i className='fas fa-user'></i> Select Designation
-          </p>
-          <form className='form' onSubmit={e => onSubmit(e)}>
-            <div className='form-group'>
+      {isAuthenticated === false && <Redirect to='/' />}
+      <Fragment>
+        {user && user.permission === 'approve' ? (
+          <Fragment>
+            {user && user.email && (
               <Fragment>
-                {designations !== null && designations.length > 0 ? (
+                <h1 className='large text-primary'>MRA Contacts</h1>
+                <p className='lead'>
+                  <i className='fas fa-user'></i> Select Designation
+                </p>
+                <form className='form' onSubmit={e => onSubmit(e)}>
+                  <div className='form-group'>
+                    <Fragment>
+                      {designations !== null && designations.length > 0 ? (
+                        <Fragment>
+                          <select
+                            name='designationId'
+                            onChange={e => {
+                              onChange(e);
+                            }}
+                          >
+                            <option value='0'>Designation</option>
+                            {designations.map(designation => (
+                              <option
+                                key={designation && designation._id}
+                                value={designation && designation._id}
+                              >
+                                {designation && designation.positionName}
+                              </option>
+                            ))}
+                          </select>
+                          <small className='form-text'>
+                            Select one Designation from the list
+                          </small>
+                        </Fragment>
+                      ) : (
+                        <Fragment>
+                          <select>
+                            <option value='0'>Designation</option>
+                          </select>
+                        </Fragment>
+                      )}
+                    </Fragment>
+                  </div>
+                  <input type='submit' className='btn btn-primary' />
+                </form>
+                <br />
+                <div>
+                  <h1>Contact details:</h1>
                   <Fragment>
-                    <select
-                      name='designationId'
-                      onChange={e => {
-                        onChange(e);
-                      }}
-                    >
-                      <option value='0'>Designation</option>
-                      {designations.map(designation => (
-                        <option
-                          key={designation && designation._id}
-                          value={designation && designation._id}
-                        >
-                          {designation && designation.positionName}
-                        </option>
-                      ))}
-                    </select>
-                    <small className='form-text'>
-                      Select one Designation from the list
-                    </small>
+                    {designations !== null && designations.length > 0 && (
+                      <Fragment>
+                        {designations.map(designation => (
+                          <Fragment key={designation && designation._id}>
+                            {designation && designation._id === designationId && (
+                              <div key={designation && designation._id}>
+                                <h1
+                                  style={{ color: '#1A5276' }}
+                                  className='large'
+                                >
+                                  {designation && designation.positionName}
+                                </h1>
+                              </div>
+                            )}
+                          </Fragment>
+                        ))}
+                      </Fragment>
+                    )}
                   </Fragment>
-                ) : (
                   <Fragment>
-                    <select>
-                      <option value='0'>Designation</option>
-                    </select>
+                    {contacts.length > 0 && (
+                      <Fragment>
+                        {contacts.map(contact => (
+                          <Fragment key={contact._id}>
+                            {contact && contact.positionId === designationId && (
+                              <div key={contact && contact._id}>
+                                <p className='lead'>
+                                  <i className='fas fa-user'></i>{' '}
+                                  <span>Name - </span>
+                                  <span style={{ color: '#34495E' }}>
+                                    {contact && contact.name}
+                                  </span>
+                                </p>
+                                <p className='lead'>
+                                  <span>Mobile No - </span>
+                                  <span style={{ color: '#34495E' }}>
+                                    {contact && contact.phone}
+                                  </span>
+                                </p>
+                                <p className='lead'>
+                                  <span>Email - </span>
+                                  <span style={{ color: '#34495E' }}>
+                                    {contact && contact.email}
+                                  </span>
+                                </p>
+                              </div>
+                            )}
+                          </Fragment>
+                        ))}
+                      </Fragment>
+                    )}
                   </Fragment>
-                )}
+                </div>
               </Fragment>
-            </div>
-            <input type='submit' className='btn btn-primary' />
-          </form>
-          <br />
-          <div>
-            <h1>Contact details:</h1>
-            <Fragment>
-              {designations !== null && designations.length > 0 && (
-                <Fragment>
-                  {designations.map(designation => (
-                    <Fragment key={designation && designation._id}>
-                      {designation && designation._id === designationId && (
-                        <div key={designation && designation._id}>
-                          <h1 style={{ color: '#1A5276' }} className='large'>
-                            {designation && designation.positionName}
-                          </h1>
-                        </div>
-                      )}
-                    </Fragment>
-                  ))}
-                </Fragment>
-              )}
-            </Fragment>
-            <Fragment>
-              {contacts.length > 0 && (
-                <Fragment>
-                  {contacts.map(contact => (
-                    <Fragment key={contact._id}>
-                      {contact && contact.positionId === designationId && (
-                        <div key={contact && contact._id}>
-                          <p className='lead'>
-                            <i className='fas fa-user'></i> <span>Name - </span>
-                            <span style={{ color: '#34495E' }}>
-                              {contact && contact.name}
-                            </span>
-                          </p>
-                          <p className='lead'>
-                            <span>Mobile No - </span>
-                            <span style={{ color: '#34495E' }}>
-                              {contact && contact.phone}
-                            </span>
-                          </p>
-                          <p className='lead'>
-                            <span>Email - </span>
-                            <span style={{ color: '#34495E' }}>
-                              {contact && contact.email}
-                            </span>
-                          </p>
-                        </div>
-                      )}
-                    </Fragment>
-                  ))}
-                </Fragment>
-              )}
-            </Fragment>
-          </div>
-        </Fragment>
-      )}
+            )}
+          </Fragment>
+        ) : (
+          <Fragment>
+            {user && user.permission === 'request' ? (
+              <Fragment>
+                <h1>
+                  Your application of using this application service is under
+                  review by Admin.
+                </h1>
+                <p>Plese login again later to check status</p>
+              </Fragment>
+            ) : (
+              <Fragment>
+                <h1>Your application was Rejected by Admin.</h1>
+                <p>Plese contact with the authority</p>
+              </Fragment>
+            )}
+          </Fragment>
+        )}
+      </Fragment>
     </Fragment>
   );
 };
