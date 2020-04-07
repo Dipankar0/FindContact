@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import logo from './fc_logo.jpg';
 
-const MainPage = ({ auth: { user } }) => {
+const Main = ({ auth: { user } }) => {
   return (
     <Fragment>
       {user && user.email && (
@@ -36,7 +36,7 @@ const MainPage = ({ auth: { user } }) => {
   );
 };
 
-MainPage.propTypes = {
+Main.propTypes = {
   auth: PropTypes.object.isRequired
 };
 
@@ -44,4 +44,4 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps)(MainPage);
+export default connect(mapStateToProps)(Main);

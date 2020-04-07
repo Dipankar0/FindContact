@@ -20,7 +20,7 @@ import Customer from './components/admin/customer/Customer';
 import Users from './components/admin/user/Users';
 import User from './components/admin/user/User';
 import Admin from './components/admin/Admin';
-import MainPage from './components/layout/MainPage';
+import Main from './components/layout/Main';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -39,7 +39,7 @@ const App = () => {
           <section className='container'>
             <Alert />
             <Switch>
-              <Route exact path='/' component={MainPage} />
+              <Route exact path='/' component={Main} />
               <Route exact path='/admin' component={Admin} />
               <Route exact path='/customers' component={Customers} />
               <Route exact path='/customer/:id' component={Customer} />
